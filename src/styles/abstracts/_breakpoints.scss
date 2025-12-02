@@ -1,0 +1,23 @@
+$breakpoints: (
+  'mobile': 640px,
+  'table': 768px,
+  'desktop': 1024,
+);
+
+@function breakpoint($name) {
+  @return map-get($breakpoints, $name)
+}
+
+@mixin mediaQuery($breakpoint, $direction: 'min') {
+  $value: breakpoint($breakpoint);
+
+  @if $direction == 'min' {
+    @media (min-width: $value) {
+      @content;
+    }
+  } @else if $direction == 'max' {
+    @media (max-width: calc($value - 1px)) {
+      @content;
+    }
+  }
+}
