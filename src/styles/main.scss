@@ -1,6 +1,6 @@
-@import 'abstracts/variables';
-@import 'abstracts/breakpoints';
-@import 'abstracts/mixins';
+@use 'abstracts/variables';
+@use 'abstracts/breakpoints';
+@use 'abstracts/mixins';
 
-@import 'base/animations';
-@import 'base/reset';
+@use 'base/animations';
+@use 'base/reset';
