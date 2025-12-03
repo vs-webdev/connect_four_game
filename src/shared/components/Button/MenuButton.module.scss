@@ -1,0 +1,19 @@
+@use '../../../styles/abstracts/variables' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+.baseButton {
+  padding: 0 1rem;
+  width: 25rem;
+  height: 4.5rem;
+  @include flex-between;
+  border: 3px solid $color-black;
+  border-radius: 1.2rem;
+  text-transform: uppercase;
+  font-size: 1.4rem;
+  font-weight: 900;
+  box-shadow: $shadow-bottom;
+}
+
+.buttonIcon {
+  width: 5rem;
+}
