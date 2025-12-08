@@ -1,0 +1,26 @@
+.disc {
+  width: 52px;
+  top: calc(15px + (var(--row) * (52px + 18px)) - (var(--row) * .4px));
+  left: calc(15px + (var(--col) * (52px + 18px)) - (var(--col) * .35px));
+  animation: dropBounce calc(0.5s + (var(--row) * 0.1s)) ease-in forwards;
+  position: absolute;
+  z-index: 2;
+}
+
+@keyframes dropBounce {
+  0% {
+    top: calc(15px + (-1 * (52px + 18px)));
+  }
+
+  80% {
+    top: calc(15px + (var(--row) * (52px + 18px)) - (var(--row) * .4px));
+  }
+
+  90% {
+    top: calc(15px + (var(--row) * 68px));
+  }
+
+  100% {
+    top: calc(15px + (var(--row) * (52px + 18px)) - (var(--row) * .4px));
+  }
+}
