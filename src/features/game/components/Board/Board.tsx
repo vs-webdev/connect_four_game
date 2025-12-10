@@ -1,21 +1,74 @@
 import styles from './Board.module.scss'
+import { useCallback, useState, type FC } from 'react'
+import type { DiscState, Player } from '../../types/game.types'
+import { BOARD } from '../../../../config/constants'
+import whiteBoard from '@/assets/images/board-layer-white-large.svg'
+import blackLayer from '@/assets/images/board-layer-black-large.svg'
+import Disc from '../Disc/Disc'
+import ColumnButton from '../ColumnButton/ColumnButton'
 
-const Board = () => {
-  const cells = Array.from({length: 6}, () => Array.from({length: 7}))
+const Board: FC = () => {
+  const [discs, setDiscs] = useState<DiscState[]>([])
+  const [currentPlayer, setCurrentPlayer] = useState<Player>('yellow')
+
+  const findAvailableRow = useCallback((column: number): number | null => {
+    const discsInColumn = discs.filter(disc => disc.col === column)
+
+    if (discsInColumn.length >= BOARD.ROWS){
+      return null;
+    }
+
+    return BOARD.BOTTOM_ROW - discsInColumn.length;
+  }, [discs])
+
+  const handleColumnClick = useCallback((column: number): void => {
+    const row = findAvailableRow(column)
+    if (row === null) return;
+    
+    const newDisc: DiscState = {
+      col: column,
+      row,
+      player: currentPlayer,
+    }
+
+    setDiscs(prev => [...prev, newDisc])
+    setCurrentPlayer(prev => prev === 'red' ? 'yellow' : 'red')
+  }, [findAvailableRow, currentPlayer])
+
   return (
-    <div className={styles.boardContainer}>
-      <div className={styles.cellContainer}>
-        {
-          cells.map((col) => (
-              col.map((_, rowIndex) => (
-                <div 
-                  className={styles.rowDiv} 
-                  key={rowIndex}
-                />
-              ))
-          ))
-        }
-      <div className={styles.disc}></div>
+    <div className={styles.wrapper}>
+      <div className={styles.boardContainer}>
+        <div>
+          <img
+            src={whiteBoard}
+            className={styles.whiteLayer}
+          />
+        </div>
+
+        <div className={styles.discContainer}>
+          {discs.map((disc) => (
+            <Disc col={disc.col} row={disc.row} player={disc.player}
+              key={`${disc.col}-${disc.row}`}
+            />
+          ))}
+        </div>
+
+        <div>
+          <img
+            src={blackLayer}
+            className={styles.blackLayer}
+          />
+        </div>
+      </div>
+
+      <div className={styles.columnContainer}>
+        {Array.from({length: BOARD.COLUMNS}).map((_, index) => (
+          <ColumnButton 
+            columnIndex={index} 
+            currentPlayer={currentPlayer} 
+            onColumnClick={handleColumnClick}
+          />
+        ))}
       </div>
     </div>
   )
