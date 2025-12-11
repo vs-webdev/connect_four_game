@@ -1,27 +1,27 @@
 import styles from './Disc.module.scss'
-import { memo, type CSSProperties, type FC } from 'react'
 import counterRedLarge from '@/assets/images/counter-red-large.svg'
 import counterYellowLarge from '@/assets/images/counter-yellow-large.svg'
+import { memo, useEffect, useRef, type CSSProperties, type FC } from 'react'
+import type { DiscCSSVars, DiscProps } from '../../types/game.types'
 
-type DiscCSSVars = {
-  '--col': number
-  '--row': number
-}
+const Disc: FC<DiscProps> = ({col, row, player, togglePlayer}) => {
+  const discRef = useRef<HTMLDivElement | null>(null)
 
-interface DiscProps {
-  col: number,
-  row: number,
-  player: 'red' | 'yellow',
-}
+  useEffect(() => {
+    const element = discRef.current
+    if (!element) return;
 
-const Disc: FC<DiscProps> = ({col, row, player}) => {
+    element.addEventListener("animationend", togglePlayer)
+    return () => element.removeEventListener("animationend", togglePlayer)
+  }, [togglePlayer])
+
   const style: CSSProperties & DiscCSSVars = {
     '--col': col,
     '--row': row
   }
 
   return (
-    <div>
+    <div ref={discRef}>
       <img
         src={player === 'red' ? counterRedLarge : counterYellowLarge}
         alt={`${player} disc`}

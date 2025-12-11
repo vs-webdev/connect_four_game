@@ -1,7 +1,7 @@
 .disc {
   width: 52px;
   top: calc(15px + (var(--row) * (52px + 18px)) - (var(--row) * .4px));
-  left: calc(15px + (var(--col) * (52px + 18px)) - (var(--col) * .35px));
+  left: calc(15px + (var(--col) * (52px + 18px)) - (var(--col) * .3px));
   animation: dropBounce calc(0.5s + (var(--row) * 0.1s)) ease-in forwards;
   position: absolute;
   z-index: 2;
