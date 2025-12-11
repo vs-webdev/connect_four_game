@@ -1,0 +1,41 @@
+@use '../../../../styles/abstracts/variables' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+.timerWrapper {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  @include flex-center;
+  top: 475px;
+}
+
+.timerContainer {
+  position: relative;
+}
+
+.timerBg {
+  width: 9.8rem;
+}
+
+.timerContent {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  justify-content: center;
+  color: $color-white;
+}
+
+.timerPara {
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.timeRemaining {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
