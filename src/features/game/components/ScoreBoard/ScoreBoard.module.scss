@@ -1,0 +1,28 @@
+@use '../../../../styles/abstracts/variables' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+.scoreContainer {
+  position: relative;
+  width: auto;
+  @include flex-center;
+  flex-direction: column;
+  background-color: $color-white;
+  padding: 3rem 2rem 1rem;
+  border: 3px solid $color-black;
+  border-radius: 1.2rem;
+  box-shadow: $shadow-bottom;
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.score {
+  display: block;
+  text-align: center;
+  font-size: 4rem;
+}
+
+.playerIcon {
+  position: absolute;
+  top: -30px;
+}

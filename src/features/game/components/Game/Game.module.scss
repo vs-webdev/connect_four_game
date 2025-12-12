@@ -1,0 +1,8 @@
+@use '../../../../styles/abstracts/variables' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+.gameContainer {
+  @include flex-center;
+  gap: 4rem;
+  user-select: none;
+}
