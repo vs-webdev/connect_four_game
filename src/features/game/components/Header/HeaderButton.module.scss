@@ -1,0 +1,19 @@
+@use '../../../../styles/abstracts/variables' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+.headerButton {
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  @include flex-center;
+  border-radius: 10rem;
+  padding: .5rem 1.3rem;
+  width: 7rem;
+  background-color: $color-darkSkyBlue;
+  color: $color-white;
+  transition: background-color .2s ease;
+
+  &:hover {
+    background-color: $color-red;
+  }
+}
