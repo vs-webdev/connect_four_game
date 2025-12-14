@@ -21,22 +21,25 @@ const MainMenu = () => {
       
       <div className={styles.buttonsContainer}>
         <MenuButton 
-          title='Player Vs Cpu' 
-          buttonClasses={styles.redBtn}
+          title='Player Vs Cpu'
+          colorClasses='red'
+          justify='between'
           icon={pvc}
           callback={handlePVCButton}
-        />
+          />
 
         <MenuButton 
-          title='Player Vs Player' 
-          buttonClasses={styles.yellowBtn}
+          title='Player Vs Player'
+          colorClasses='yellow'
+          justify='between'
           icon={pvp}
           callback={handlePVPButton}
-        />
+          />
 
         <MenuButton 
-          title='Rules' 
-          buttonClasses={styles.whiteBtn}
+          title='Rules'
+          colorClasses='white'
+          justify='between'
           callback={handleRulesButton}
         />
       </div>

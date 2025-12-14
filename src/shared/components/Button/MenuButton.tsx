@@ -1,16 +1,20 @@
 import type { FC, MouseEvent } from "react";
 import styles from './MenuButton.module.scss'
 
+type Justify = "between" | "center"
+type Color = "red" | "yellow" | "white"
+
 interface ButtonProps {
   title: string;
-  buttonClasses: string;
+  colorClasses: Color;
+  justify: Justify;
   icon?: string;
   callback: (event: MouseEvent<HTMLButtonElement>) => void;
 }
-const MenuButton: FC<ButtonProps> = ({title, buttonClasses, icon, callback}) => {
+const MenuButton: FC<ButtonProps> = ({title, colorClasses, justify, icon, callback}) => {
   return (
     <button
-      className={`${styles.baseButton} ${buttonClasses}`}
+      className={`${styles.baseButton} ${styles[colorClasses]} ${styles[justify]}`}
       onClick={callback}
     >
       {title}
