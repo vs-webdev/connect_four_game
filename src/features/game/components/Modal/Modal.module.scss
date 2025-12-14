@@ -1,0 +1,42 @@
+@use '../../../../styles/abstracts/variables' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+.modalWrapper {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  @include flex-center;
+  background-color: rgba(0, 0, 0, 0.599);
+}
+
+.modalDiv {
+  border: 3px solid;
+  border-radius: 2rem;
+  box-shadow: $shadow-bottom;
+  padding: 3rem 3rem 4rem;
+  background-color: $color-bg;
+}
+
+.modalTitle {
+  font-size: 3.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  color: $color-white;
+  margin-bottom: 2rem
+}
+
+.buttonsContainer {
+  @include flex-column;
+  gap: 2rem;
+}
+
+.redBtn {
+  background-color: $color-red;
+  color: $color-white;
+}
+
+.whiteBtn {
+  background-color: $color-white;
+  color: $color-black;
+}
