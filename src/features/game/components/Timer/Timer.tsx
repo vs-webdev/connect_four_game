@@ -5,17 +5,20 @@ import styles from './Timer.module.scss'
 import type { Player } from '../../types/game.types'
 
 interface TimerProps {
-  currentPlayer: Player,
-  togglePlayer: () => void,
+  currentPlayer: Player;
+  togglePlayer: () => void;
+  isPause: boolean;
 }
 
-const Timer: FC<TimerProps> = ({currentPlayer, togglePlayer}) => {
+const Timer: FC<TimerProps> = ({currentPlayer, togglePlayer, isPause}) => {
   const [timeRemaining, setTimeRemaining] = useState(30)
 
   useEffect(() => {
+    if (isPause) return;
+  
     const timer = setInterval(() => {
       setTimeRemaining(prev => {
-        if (prev === 0) {
+        if (prev <= 0) {
           return 30
         }
         return prev - 1;
@@ -23,11 +26,11 @@ const Timer: FC<TimerProps> = ({currentPlayer, togglePlayer}) => {
     }, 1000);
 
     return () => clearInterval(timer)
-  }, [])
+  }, [isPause])
 
   // Toggles Player once timer reaches 0
   useEffect(() => {
-    if (timeRemaining === 0) togglePlayer()
+    if (timeRemaining <= 0) togglePlayer()
   }, [timeRemaining])
 
   // Reset Timer when currentPlayer changes
