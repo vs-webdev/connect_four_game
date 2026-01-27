@@ -7,31 +7,36 @@ import blackLayer from '@/assets/images/board-layer-black-large.svg'
 import Disc from '../Disc/Disc'
 import ColumnButton from '../ColumnButton/ColumnButton'
 import Timer from '../Timer/Timer'
+import checkWin from '../../helpers/checkWin'
+import { useGameStore } from '../../../../store/store'
+import { useShallow } from 'zustand/shallow'
 
-const Board: FC = () => {
-  const [discs, setDiscs] = useState<DiscState[]>([])
-  const [currentPlayer, setCurrentPlayer] = useState<Player>('red')
+const Board = () => {
+  const { boardDiscs, updateBoardDiscs, currentPlayer, toggleCurrentPlayer } = useGameStore(useShallow(state => ({
+    boardDiscs: state.boardDiscs,
+    updateBoardDiscs: state.updateBoardDiscs,
+    currentPlayer: state.currentPlayer,
+    toggleCurrentPlayer: state.toggleCurrentPlayer,
+  })))
+
   const [isAnimating, setIsAnimating] = useState<boolean>(false)
 
-  const togglePlayer = useCallback(() => {
-    setCurrentPlayer(prev => prev === 'red' ? 'yellow' : 'red')
-  }, [])
-
   const onAnimationEnd = () => {
-    togglePlayer()
+    console.log("animation end")
+    toggleCurrentPlayer()
     setIsAnimating(false)
   }
 
   const findAvailableRow = useCallback((column: number): number | null => {
-    const discsInColumn = discs.filter(disc => disc.col === column)
+    const discsInColumn = boardDiscs.filter((disc) => disc.col === column)
 
     if (discsInColumn.length >= BOARD.ROWS){
       return null;
     }
 
     return BOARD.BOTTOM_ROW - discsInColumn.length;
-  }, [discs])
-  
+  }, [boardDiscs])
+
   
   const handleColumnClick = useCallback((column: number): void => {
     if (isAnimating) return;
@@ -44,8 +49,8 @@ const Board: FC = () => {
       row,
       player: currentPlayer,
     }
-    const newDiscs = [...discs, newDisc]
-    setDiscs(prev => [...prev, newDisc])
+    
+    updateBoardDiscs(newDisc)
 
   }, [findAvailableRow, currentPlayer])
 
@@ -61,7 +66,7 @@ const Board: FC = () => {
         </div>
 
         <div className={styles.discContainer}>
-          {discs.map((disc) => (
+          {boardDiscs.map((disc) => (
             <Disc 
               key={`${disc.col}-${disc.row}`}
               col={disc.col} 
@@ -92,7 +97,7 @@ const Board: FC = () => {
         ))}
       </div>
 
-      <Timer currentPlayer={currentPlayer} togglePlayer={togglePlayer} />
+      <Timer />
     </div>
   )
 }

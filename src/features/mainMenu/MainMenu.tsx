@@ -3,16 +3,21 @@ import logo from '../../assets/images/logo.svg'
 import pvc from '../../assets/images/player-vs-cpu.svg'
 import pvp from '../../assets/images/player-vs-player.svg'
 import MenuButton from '../../shared/components/Button/MenuButton'
+import { useGameStore } from '../../store/store'
 
 const MainMenu = () => {
+  const setScreen = useGameStore(state => state.setScreen)
+
   const handlePVCButton = () => {
-    return;
+    setScreen('pvc');
   }
+
   const handlePVPButton = () => {
-    return;
+    setScreen('pvp')
   }
+
   const handleRulesButton = () => {
-    return;
+    setScreen('rules');
   }
 
   return (
