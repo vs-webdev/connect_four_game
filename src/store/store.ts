@@ -16,6 +16,7 @@ export interface ConnectFourStore {
   setIsPaused: (paused: boolean) => void;
   resetTimer: () => void;
   advanceTimer: () => void;
+  quitGame: () => void;
 }
 
 export const useGameStore = create<ConnectFourStore>((set, get) => ({
@@ -50,7 +51,7 @@ export const useGameStore = create<ConnectFourStore>((set, get) => ({
     if (isPaused) return;
 
     set(state => {
-      if (state.timeRemaining < 1) {
+      if (state.timeRemaining <= 1) {
         return {
           timeRemaining: 30,
           currentPlayer: state.currentPlayer === 'red' ? 'yellow' : 'red',
@@ -61,5 +62,13 @@ export const useGameStore = create<ConnectFourStore>((set, get) => ({
         timeRemaining: state.timeRemaining - 1,
       }
     })
-  }
+  },
+
+  quitGame: () => set(() => ({
+    timeRemaining: 30,
+    currentScreen: 'mainMenu',
+    boardDiscs: [],
+    isPaused: false,
+    currentPlayer: 'red',
+  }))
 }))
