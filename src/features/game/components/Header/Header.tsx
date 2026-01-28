@@ -2,10 +2,14 @@ import styles from "./Header.module.scss"
 import logo from "@/assets/images/logo.svg"
 import HeaderButton from "./HeaderButton"
 import { useGameStore } from "../../../../store/store"
+import { useShallow } from "zustand/shallow"
 
 
 const Header = () => {
-  const setIsPaused = useGameStore(state => state.setIsPaused)
+  const { setIsPaused, restartGame } = useGameStore(useShallow(state => ({
+    setIsPaused: state.setIsPaused,
+    restartGame: state.restartGame,
+  })))
 
   return (
     <div className={styles.headerContainer}>
@@ -13,7 +17,7 @@ const Header = () => {
       <div className={styles.logoContainer}>
         <img src={logo} alt="Logo Icon" className={styles.logo} />
       </div>
-      <HeaderButton title="restart" />
+      <HeaderButton title="restart" handleOnClick={() => restartGame()} />
     </div>
   )
 }

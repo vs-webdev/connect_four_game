@@ -1,16 +1,12 @@
-import type { FC } from 'react';
 import MenuButton from '../../../../shared/components/Button/MenuButton'
 import styles from './Modal.module.scss'
 import { useGameStore } from '../../../../store/store';
 import { useShallow } from 'zustand/shallow';
 
-interface ModalProps {
-  reset: () => void;
-}
-
-const Modal: FC<ModalProps> = ({reset}) => {
-  const { setIsPaused, quitGame } = useGameStore(useShallow(state => ({
+const Modal= () => {
+  const { setIsPaused, restartGame, quitGame } = useGameStore(useShallow(state => ({
     setIsPaused: state.setIsPaused,
+    restartGame: state.restartGame,
     quitGame: state.quitGame,
   })))
 
@@ -30,7 +26,7 @@ const Modal: FC<ModalProps> = ({reset}) => {
             title='restart'
             colorClasses='white'
             justify='center' 
-            callback={reset} 
+            callback={restartGame} 
             />
 
           <MenuButton 
