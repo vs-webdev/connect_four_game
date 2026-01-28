@@ -1,41 +1,38 @@
-import { useEffect, useState, type FC } from 'react'
+import { useEffect } from 'react'
 import turnBackgroundRed from '../../../../assets/images/turn-background-red.svg'
 import turnBackgroundYellow from '../../../../assets/images/turn-background-yellow.svg'
 import styles from './Timer.module.scss'
-import type { Player } from '../../types/game.types'
+import { useGameStore } from '../../../../store/store'
+import { useShallow } from 'zustand/shallow'
 
-interface TimerProps {
-  currentPlayer: Player;
-  togglePlayer: () => void;
-  isPause: boolean;
-}
-
-const Timer: FC<TimerProps> = ({currentPlayer, togglePlayer, isPause}) => {
-  const [timeRemaining, setTimeRemaining] = useState(30)
+const Timer = () => {
+  const { 
+    currentPlayer, 
+    timeRemaining, 
+    advanceTimer, 
+    isPaused, 
+    resetTimer 
+  } = useGameStore(useShallow(state => ({
+    currentPlayer: state.currentPlayer,
+    toggleCurrentPlayer: state.toggleCurrentPlayer,
+    timeRemaining: state.timeRemaining,
+    advanceTimer: state.advanceTimer,
+    isPaused: state.isPaused,
+    resetTimer: state.resetTimer,
+  })))
 
   useEffect(() => {
-    if (isPause) return;
+    if (isPaused) return;
   
     const timer = setInterval(() => {
-      setTimeRemaining(prev => {
-        if (prev <= 0) {
-          return 30
-        }
-        return prev - 1;
-      })
+      advanceTimer()
     }, 1000);
 
     return () => clearInterval(timer)
-  }, [isPause])
+  }, [isPaused])
 
-  // Toggles Player once timer reaches 0
   useEffect(() => {
-    if (timeRemaining <= 0) togglePlayer()
-  }, [timeRemaining])
-
-  // Reset Timer when currentPlayer changes
-  useEffect(() => {
-    setTimeRemaining(30);
+    resetTimer()
   }, [currentPlayer]); 
 
   return (

@@ -8,18 +8,22 @@ export interface ConnectFourStore {
   boardDiscs: DiscState[];
   currentPlayer: Player;
   isPaused: boolean;
+  timeRemaining: number;
   
   setScreen: (v: Screen) => void;
   updateBoardDiscs: (disc: DiscState) => void;
   toggleCurrentPlayer: () => void;
-  setPaused: (paused: boolean) => void;
+  setIsPaused: (paused: boolean) => void;
+  resetTimer: () => void;
+  advanceTimer: () => void;
 }
 
-export const useGameStore = create<ConnectFourStore>((set) => ({
+export const useGameStore = create<ConnectFourStore>((set, get) => ({
   currentScreen: 'mainMenu',
   boardDiscs: [],
   currentPlayer: 'red',
   isPaused: false,
+  timeRemaining: 30,
 
   setScreen: (screen) => set(() => ({
     currentScreen: screen,
@@ -33,7 +37,29 @@ export const useGameStore = create<ConnectFourStore>((set) => ({
     currentPlayer: state.currentPlayer === 'red' ? 'yellow' : 'red'
   })),
 
-  setPaused: (paused) => set(() => ({
+  setIsPaused: (paused) => set(() => ({
     isPaused: paused
   })),
+
+  resetTimer: () => set(() => ({
+    timeRemaining: 30,
+  })),
+
+  advanceTimer: () => {
+    const { isPaused } = get();
+    if (isPaused) return;
+
+    set(state => {
+      if (state.timeRemaining < 1) {
+        return {
+          timeRemaining: 30,
+          currentPlayer: state.currentPlayer === 'red' ? 'yellow' : 'red',
+        }
+      }
+
+      return {
+        timeRemaining: state.timeRemaining - 1,
+      }
+    })
+  }
 }))
