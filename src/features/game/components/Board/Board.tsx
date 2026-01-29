@@ -1,6 +1,6 @@
 import styles from './Board.module.scss'
-import { useCallback, useState, type FC } from 'react'
-import type { DiscState, Player } from '../../types/game.types'
+import { useCallback, useState } from 'react'
+import type { DiscState } from '../../types/game.types'
 import { BOARD } from '../../../../config/constants'
 import whiteBoard from '@/assets/images/board-layer-white-large.svg'
 import blackLayer from '@/assets/images/board-layer-black-large.svg'
@@ -10,38 +10,33 @@ import Timer from '../Timer/Timer'
 import checkWin from '../../helpers/checkWin'
 import { useGameStore } from '../../../../store/store'
 import { useShallow } from 'zustand/shallow'
+import { getAvailableRow } from '../../helpers/getAvailableRow'
 
 const Board = () => {
-  const { boardDiscs, updateBoardDiscs, currentPlayer, toggleCurrentPlayer } = useGameStore(useShallow(state => ({
-    boardDiscs: state.boardDiscs,
-    updateBoardDiscs: state.updateBoardDiscs,
-    currentPlayer: state.currentPlayer,
-    toggleCurrentPlayer: state.toggleCurrentPlayer,
-  })))
+  const { 
+      boardDiscs, 
+      updateBoardDiscs, 
+      currentPlayer, 
+      toggleCurrentPlayer 
+    } = useGameStore(useShallow(state => ({
+      boardDiscs: state.boardDiscs,
+      updateBoardDiscs: state.updateBoardDiscs,
+      currentPlayer: state.currentPlayer,
+      toggleCurrentPlayer: state.toggleCurrentPlayer,
+    })
+  ))
 
   const [isAnimating, setIsAnimating] = useState<boolean>(false)
 
   const onAnimationEnd = () => {
-    console.log("animation end")
     toggleCurrentPlayer()
     setIsAnimating(false)
   }
-
-  const findAvailableRow = useCallback((column: number): number | null => {
-    const discsInColumn = boardDiscs.filter((disc) => disc.col === column)
-
-    if (discsInColumn.length >= BOARD.ROWS){
-      return null;
-    }
-
-    return BOARD.BOTTOM_ROW - discsInColumn.length;
-  }, [boardDiscs])
-
   
   const handleColumnClick = useCallback((column: number): void => {
     if (isAnimating) return;
     setIsAnimating(true)
-    const row = findAvailableRow(column)
+    const row = getAvailableRow(column, boardDiscs)
     if (row === null) return;
     
     const newDisc: DiscState = {
@@ -52,7 +47,9 @@ const Board = () => {
     
     updateBoardDiscs(newDisc)
 
-  }, [findAvailableRow, currentPlayer])
+    const winningDiscs = checkWin(column, row, currentPlayer, boardDiscs)
+    console.log(winningDiscs)
+  }, [getAvailableRow, currentPlayer])
 
 
   return (
